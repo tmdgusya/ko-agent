@@ -1,11 +1,12 @@
-package model
+package model.openai
 
 import Model
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.coroutines.awaitStringResponseResult
 import kotlinx.serialization.json.Json
-import model.dto.Message
-import model.dto.TextGenerationRequest
+import model.openai.dto.Message
+import model.openai.dto.TextGenerationRequest
+import model.openai.dto.TextGenerationResponse
 
 class OpenAI(
     private val apiKey: String,
@@ -14,21 +15,23 @@ class OpenAI(
         return Fuel
             .post(OPEN_AI_URL)
             .header("Content-Type", "application/json")
-            .header("Authorization", apiKey)
-            .body(Json.encodeToString(TextGenerationRequest(
-                model = ModelName.GPT_4.detail,
+            .header("Authorization", "Bearer $apiKey")
+            .body(Json.encodeToString(
+                TextGenerationRequest(
+                model = ModelName.GPT_4O.detail,
                 messages = listOf(
                     Message(
-                        role = Message.Role.USER,
+                        role = Message.Role.USER.text,
                         content = message,
                     )
                 )
-            )))
+            )
+            ))
             .awaitStringResponseResult()
             .third
             .fold(
-                { data -> println(data) },
-                { error -> println("Error: ${error.message}") }
+                { data -> println(Json.decodeFromString<TextGenerationResponse>(data).toString()) },
+                { error -> println("Error: ${error}") }
             )
     }
 

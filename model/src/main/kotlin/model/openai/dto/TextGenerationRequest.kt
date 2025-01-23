@@ -1,4 +1,4 @@
-package model.dto
+package model.openai.dto
 
 import kotlinx.serialization.Serializable
 

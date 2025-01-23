@@ -1,5 +1,5 @@
-import model.ModelName
-import model.OpenAI
+import model.openai.ModelName
+import model.openai.OpenAI
 
 suspend fun main() {
     val model = OpenAI("")

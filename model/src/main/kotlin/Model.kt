@@ -1,4 +1,4 @@
-import model.ModelName
+import model.openai.ModelName
 
 /**
  *
